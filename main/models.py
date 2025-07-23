@@ -22,10 +22,10 @@ class Product(models.Model):
         default=False,
         verbose_name="Доставка"
     )
-    # image = models.ImageField(
-    #     upload_to="product/",
-    #     verbose_name='Фото'
-    # )
+    image = models.ImageField(
+        upload_to="product/",
+        verbose_name='Фото'
+    )
     
     def __str__(self):
         return self.title
