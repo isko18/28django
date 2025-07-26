@@ -10,6 +10,13 @@
       padding: 20px;
     }
 
+    input[type="text"] {
+      padding: 10px;
+      width: 300px;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
     .product-container {
       display: flex;
       flex-wrap: wrap;
@@ -76,20 +83,28 @@
 <body>
   <h1>🛒 Каталог товаров Geeks</h1>
 
-  <div class="product-container">
-    {% for products in product %}
-    <div class="product-card">
-      <img class="product-image" src="{{ products.image.url }}" alt="{{ products.title }}">
-      <div class="product-details">
-        <div class="product-title">{{ products.title }}</div>
-        <div class="product-price">{{ products.price }} ₽</div>
-        <div class="product-description">
-          {{ products.description|truncatewords:15 }}
-        </div>
-        {% comment %} <a href="{% url 'product_detail' product.id %}" class="product-button">Подробнее</a> {% endcomment %}
-      </div>
-    </div>
-    {% endfor %}
+  <!-- 🔍 Live Search input -->
+  <input type="text" id="search-input" placeholder="Поиск товара по названию...">
+
+  <!-- 🖼️ Результаты -->
+  <div id="product-list" class="product-container">
+    {% include "product_cards.html" with products=product_filter.qs %}
   </div>
+
+  <!-- ⚡ Live Search script -->
+  <script>
+    const input = document.getElementById('search-input');
+    const productList = document.getElementById('product-list');
+
+    input.addEventListener('input', function () {
+      const query = this.value;
+
+      fetch(`/live_search/?q=${encodeURIComponent(query)}`)
+        .then(response => response.json())
+        .then(data => {
+          productList.innerHTML = data.html;
+        });
+    });
+  </script>
 </body>
 </html>

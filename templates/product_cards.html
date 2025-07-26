@@ -1,0 +1,13 @@
+{% for products in products %}
+  <div class="product-card">
+    <img class="product-image" src="{{ products.image.url }}" alt="{{ products.title }}">
+    <div class="product-details">
+      <div class="product-title">{{ products.title }}</div>
+      <div class="product-price">{{ products.price }} сом</div>
+      <div class="product-description">{{ products.description|truncatewords:15 }}</div>
+      <a href="{% url 'product_detail' products.id %}" class="product-button">Подробнее</a>
+    </div>
+  </div>
+{% empty %}
+  <p>🔍 Ничего не найдено...</p>
+{% endfor %}
